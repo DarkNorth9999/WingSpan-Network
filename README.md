@@ -67,11 +67,21 @@ To set up and run WingSpan locally, follow these steps:
 # Clone the repository
 git clone git@github.com:DarkNorth9999/DarkNorth9999-WingSpan-Network-Frontend.git
 
+cd frontend
 
 # Install dependencies
 npm install
 
-# Start the application
+# Start the frontend
 npm run dev
+
+
+cd backend
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start the backend
+python main.py
 
 ```
