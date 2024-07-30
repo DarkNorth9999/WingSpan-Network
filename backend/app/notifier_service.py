@@ -16,9 +16,7 @@ async def check_flights_update():
 
     check_time = datetime.now() - timedelta(hours=4)
 
-
-#Flight.last_updated <= check_time,
-    flights = session.query(Flight).filter(
+    flights = session.query(Flight).filter(Flight.last_updated <= check_time,
                                            Flight.subscription_count > 0).all()
 
 
@@ -33,29 +31,6 @@ async def compare_and_update_flight(flight, api_data, session):
     api_data = api_data[0]
     differences = []
     fields_to_update = {}
-
-    # # Comparisons
-    # if compare_datetimes(flight.actual_departure, api_data['actual_departure']):
-    #     differences.append(("Departure change", f"Departure changed from {flight.actual_departure} to {convert_iso_to_standard(api_data['actual_departure'])}"))
-    #     fields_to_update['actual_departure'] = api_data['actual_departure']
-    # if compare_datetimes(flight.actual_arrival, api_data['actual_arrival']):
-    #     differences.append(("Actual arrival change", f"Actual arrival changed from {flight.actual_arrival} to {convert_iso_to_standard(api_data['actual_arrival'])}"))
-    #     fields_to_update['actual_arrival'] = api_data['actual_arrival']
-    # if flight.status != api_data['status']:
-    #     differences.append(("Status change", f"Status changed from {flight.status} to {api_data['status']}"))
-    #     fields_to_update['status'] = api_data['status']
-    # if flight.departure_gate != api_data['departure_gate']:
-    #     differences.append(("Gate change", f"Departure gate changed from {flight.departure_gate} to {api_data['departure_gate']}"))
-    #     fields_to_update['departure_gate'] = api_data['departure_gate']
-    # if flight.arrival_gate != api_data['arrival_gate']:
-    #     differences.append(("Gate change", f"Arrival gate changed from {flight.arrival_gate} to {api_data['arrival_gate']}"))
-    #     fields_to_update['arrival_gate'] = api_data['arrival_gate']
-    # if flight.departure_terminal != api_data['departure_terminal']:
-    #     differences.append(("Terminal change", f"Departure terminal changed from {flight.departure_terminal} to {api_data['departure_terminal']}"))
-    #     fields_to_update['departure_terminal'] = api_data['departure_terminal']
-    # if flight.arrival_terminal != api_data['arrival_terminal']:
-    #     differences.append(("Terminal change", f"Arrival terminal changed from {flight.arrival_terminal} to {api_data['arrival_terminal']}"))
-    #     fields_to_update['arrival_terminal'] = api_data['arrival_terminal']
 
     if compare_datetimes(flight.actual_departure, api_data['actual_departure']):
         differences.append(("Departure change",
@@ -131,29 +106,3 @@ def compare_datetimes(dt1, dt2_str):
 # while True:
 #     schedule.run_pending()
 #     time.sleep(1)
-
-
-
-
-account_sid = 'AC6902800b3118d29294c6f2fb5762cac1'
-auth_token = '3dbf584f3f15b409aa07c96668f7dd42'
-
-from twilio.rest import Client
-
-# Replace these with your actual Twilio credentials
-TWILIO_ACCOUNT_SID = 'AC6902800b3118d29294c6f2fb5762cac1'
-TWILIO_AUTH_TOKEN = '3dbf584f3f15b409aa07c96668f7dd42'
-TWILIO_PHONE_NUMBER = '+16187541957'
-RECIPIENT_PHONE_NUMBER = '+919899079236'
-async def send_sms(phone_list, message):
-    try:
-        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        for phone in phone_list:
-            client.messages.create(
-                to=phone,
-                from_=TWILIO_PHONE_NUMBER,
-                body=message
-            )
-        print("Messages sent successfully!")
-    except Exception as e:
-        print(f"Failed to send the message: {e}")

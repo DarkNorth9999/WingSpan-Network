@@ -1,3 +1,5 @@
+import os
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -8,9 +10,13 @@ from app.models.user import User
 from app.repositories.user_repository import get_user_by_username
 from app.database import get_db
 from app.schemas.user import TokenData
+import os
+from dotenv import load_dotenv
 
-SECRET_KEY = '9427f3fc427c49692d3b8f2cf468e43e3e54d7fcffb0b967d1044dc570597be3'
-ALGORITHM = 'HS256'
+load_dotenv()
+
+SECRET_KEY = os.getenv('AUTH_SECRET')
+ALGORITHM = os.getenv('AUTH_ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

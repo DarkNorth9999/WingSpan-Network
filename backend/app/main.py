@@ -7,7 +7,7 @@ from app.kafka.consumer import consumer
 import asyncio
 from schemas.kafka import Message
 from contextlib import asynccontextmanager
-from cron_notifier import check_flights_update
+from notifier_service import check_flights_update
 
 async def periodic_flight_check():
     while True:

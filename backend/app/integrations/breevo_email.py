@@ -1,12 +1,16 @@
 # Import SendinBlue library
 import sib_api_v3_sdk
 from sib_api_v3_sdk.rest import ApiException
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Create a SendinBlue API configuration
 configuration = sib_api_v3_sdk.Configuration()
 
 # Replace "<your brevo api key here>" with your actual SendinBlue API key
-configuration.api_key['api-key'] = "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"
+configuration.api_key['api-key'] = os.getenv('BREEVO_API_KEY')
 
 # Initialize the SendinBlue API instance
 api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))

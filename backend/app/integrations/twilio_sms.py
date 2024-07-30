@@ -1,9 +1,13 @@
 from twilio.rest import Client
+import os
+from dotenv import load_dotenv
 
-TWILIO_ACCOUNT_SID = 'AC6902800b3118d29294c6f2fb5762cac1'
-TWILIO_AUTH_TOKEN = '3dbf584f3f15b409aa07c96668f7dd42'
-TWILIO_PHONE_NUMBER = '+16187541957'
-RECIPIENT_PHONE_NUMBER = '+919899079236'
+load_dotenv()
+
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
+RECIPIENT_PHONE_NUMBER = os.getenv('RECIPIENT_PHONE_NUMBER')
 
 async def send_sms(phone_list,message):
     try:
