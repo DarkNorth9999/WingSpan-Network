@@ -19,3 +19,6 @@ class KafkaProducer:
 
     async def stop(self):
         await self.producer.stop()
+
+kafka_servers = 'localhost:9093'
+producer = KafkaProducer(servers=kafka_servers)

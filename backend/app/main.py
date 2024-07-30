@@ -1,11 +1,33 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from app.controllers import auth_controller, flight_controller, subscription_controller, notification_controller, token_controller
-from app.kafka.producer import KafkaProducer
-from app.kafka.consumer import KafkaConsumer
+from app.kafka.producer import producer
+from app.kafka.consumer import consumer
+import asyncio
+from schemas.kafka import Message
+from contextlib import asynccontextmanager
+from cron_notifier import check_flights_update
 
-app = FastAPI()
+async def periodic_flight_check():
+    while True:
+        await check_flights_update()
+        await asyncio.sleep(7200)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await producer.start()
+    await consumer.start()
+    asyncio.create_task(consumer.consume_messages())
+    asyncio.create_task(periodic_flight_check())
+    yield
+    await producer.stop()
+    await consumer.stop()
+
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,19 +43,13 @@ app.include_router(flight_controller.router, prefix="/flights")
 app.include_router(subscription_controller.router, prefix="/subscriptions")
 app.include_router(notification_controller.router, prefix="/notifications")
 
-# kafka_servers = 'localhost:9092'
-# producer = KafkaProducer(servers=kafka_servers)
-# consumer = KafkaConsumer(servers=kafka_servers, topic='notifications', group_id='group1')
-
-# @app.on_event("startup")
-# async def startup_event():
-#     await producer.start()
-#     await consumer.start()
-#
-# @app.on_event("shutdown")
-# async def shutdown_event():
-#     await producer.stop()
-#     await consumer.stop()
+@app.post("/kafka/produce/")
+async def send_message_to_kafka(message: Message):
+    try:
+        await producer.send_message(message.topic, '['+ message.flight_id+ ']- ' + message.message)
+        return {"status": "Message sent to Kafka"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/")

@@ -1,18 +1,17 @@
-import ThreeDCardDemo from './components/LandingPage/Test'
 import { SparklesPreview } from './components/LandingPage/SparklesPreview'
 import HeroScrollDemo from './components/LandingPage/HeroScrollPreview'
 import GlobeDemo from './components/LandingPage/Globe'
 import AnimatedPinDemo from './components/LandingPage/PinContainerDemo'
-import MainFlightPage from './components/MainFlightPage/MainFlightPage'
 import FloatingNavbar from './components/MainFlightPage/Navbar'
 import { useRef, useState } from 'react'
+
+
 function App() {
   const mainPageRef = useRef(null)
   const [username, setUsername] = useState(null);
 
   return (
     <>
-    {/* <TracingBeam className="px-6"> */}
     <FloatingNavbar mainPageRef={mainPageRef} username={username}/>
     <SparklesPreview/>
     <div ref={mainPageRef}><HeroScrollDemo setUsername={setUsername}/></div>
@@ -27,11 +26,7 @@ function App() {
     <div className='flex gap-4 items-center justify-center'>
     <AnimatedPinDemo/>
       <GlobeDemo/>
-      
-      {/* <ThreeDCardDemo/> */}
     </div>
-
-     {/* </TracingBeam> */}
     </>
   )
 }
