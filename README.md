@@ -4,6 +4,10 @@
 
 WingSpan Network is a real-time flight tracking application with live notification on flight updates like delays, gate changes, cancellations, and more.
 
+## Architecture
+
+## Database
+
 ## Features
 
 - **Real-time Flight Tracking**: Allows users to search and track flight status in real time, including departure and arrival times, gate information, and any delays or cancellations.
