@@ -1,8 +1,7 @@
 'use client';
-import React, { useEffect } from 'react';
 import { DateTimePicker } from '@/components/ui/shadcn/CustomDateTime';
 
-const DatetimePickerGranularity = ({date,setDate}) => {
+const DatetimePickerGranularity = ({date,setDate}:{date:any,setDate:any}) => {
   
 
 

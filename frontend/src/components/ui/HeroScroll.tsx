@@ -1,4 +1,6 @@
 // ContainerScroll.tsx
+// @ts-nocheck
+
 import React, { useRef, useState, useEffect } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 

@@ -8,7 +8,7 @@
         "actual_departure": "2024-08-02T07:15:00Z",
         "scheduled_arrival": "2024-08-01T10:00:00Z",
         "actual_arrival": "2024-09-01T10:05:00Z",
-        "departure_gate": "23",
+        "departure_gate": "2s3",
         "arrival_gate": "45",
         "departure_terminal": "45",
         "arrival_terminal": "7",

@@ -1,5 +1,5 @@
 // SparklesPreview.tsx
-import React from 'react';
+
 import { SparklesCore } from '../ui/SparkleText'; // Adjust the import path as necessary
 
 export function SparklesPreview() {

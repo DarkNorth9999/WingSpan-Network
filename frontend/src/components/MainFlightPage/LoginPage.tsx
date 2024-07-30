@@ -1,4 +1,4 @@
-"use client";
+
 import React, { useState } from "react";
 import { Label } from "../ui/Form/Label";
 import { Input } from "../ui/Form/Input";
@@ -6,12 +6,16 @@ import { cn } from "../../utils/cn";
 import axiosInstance from "@/utils/axios";
 
 
-export default function LoginAndSignUp({isLoggedIn, setIsLoggedIn, setUsername}) {
+export default function LoginAndSignUp({isLoggedIn, setIsLoggedIn, setUsername}:{ isLoggedIn: any;
+  setIsLoggedIn: any;
+  setUsername: any;}) {
 
   const [toggleLogin, setToggleLogin] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setSubmitting(true)
 
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -41,25 +45,28 @@ export default function LoginAndSignUp({isLoggedIn, setIsLoggedIn, setUsername})
         localStorage.setItem('token', result.access_token)
         localStorage.setItem('username', result.username)
         setIsLoggedIn(true)
+        setSubmitting(false)
         setUsername(result.username)
         
       } else {
         throw new Error(result.message || 'Failed to register');
       }
-    } catch (error) {
+    } catch (error:any) {
+      setSubmitting(false)
       console.error('Error during registration:', error.message);
       
     }
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    setSubmitting(true)
 
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     
     const formData = new URLSearchParams();
-    formData.append('username', form.get('username'));
-    formData.append('password', form.get('password'));
+    formData.append('username', form.get('username') as any);
+    formData.append('password', form.get('password') as any);
 
     console.log('login params', form.get('username'),' ', form.get('password'))
 
@@ -74,9 +81,11 @@ export default function LoginAndSignUp({isLoggedIn, setIsLoggedIn, setUsername})
         localStorage.setItem('username', result.username)
         setUsername(result.username)
         setIsLoggedIn(true)
+        setSubmitting(false)
       }
 
-    } catch (error) {
+    } catch (error:any) {
+      setSubmitting(false)
         console.error('Login error:', error.response ? error.response.data.detail : 'Unknown error');
     }
   }
@@ -85,15 +94,15 @@ export default function LoginAndSignUp({isLoggedIn, setIsLoggedIn, setUsername})
     <>
     {!isLoggedIn &&
     <>
-    {!toggleLogin && <SignUpForm handleSubmit={handleSubmit} setToggleLogin={setToggleLogin}/>}
-    {toggleLogin && <LoginForm handleLogin={handleLogin} setToggleLogin={setToggleLogin} />}
+    {!toggleLogin && <SignUpForm submitting={submitting} handleSubmit={handleSubmit} setToggleLogin={setToggleLogin}/>}
+    {toggleLogin && <LoginForm submitting={submitting} handleLogin={handleLogin} setToggleLogin={setToggleLogin} />}
     </> }
       
     </>
   );
 }
 
-const LoginForm = ({handleLogin, setToggleLogin})=>{
+const LoginForm = ({submitting,handleLogin, setToggleLogin}:{submitting:any,handleLogin:any, setToggleLogin:any})=>{
   return <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to WingSpan!
@@ -116,7 +125,7 @@ const LoginForm = ({handleLogin, setToggleLogin})=>{
           className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
         >
-          Login &rarr;
+          {submitting?'Logging In..':'Login'} &rarr;
           <BottomGradient />
         </button>
 
@@ -138,7 +147,7 @@ const LoginForm = ({handleLogin, setToggleLogin})=>{
     </div>
 }
 
-const SignUpForm = ({handleSubmit, setToggleLogin})=>{
+const SignUpForm = ({submitting,handleSubmit, setToggleLogin}:{submitting:any,handleSubmit:any, setToggleLogin:any})=>{
   return <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to WingSpan!
@@ -180,7 +189,7 @@ const SignUpForm = ({handleSubmit, setToggleLogin})=>{
           className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
         >
-          Sign up &rarr;
+          {submitting?'Signing up..':"Sign up"} &rarr;
           <BottomGradient />
         </button>
 

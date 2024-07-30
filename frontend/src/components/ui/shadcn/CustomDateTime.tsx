@@ -1,4 +1,5 @@
-'use client';
+// @ts-nocheck
+
 import * as React from 'react';
 import { useImperativeHandle, useRef } from 'react';
 import { add, format } from 'date-fns';

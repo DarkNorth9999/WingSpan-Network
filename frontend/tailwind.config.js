@@ -1,4 +1,8 @@
 /** @type {import('tailwindcss').Config} */
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette")
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -82,5 +86,29 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    addVariablesForColors,
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".space-x-only-4 > :not([hidden]) ~ :not([hidden])": {
+          "--tw-space-x-reverse": "0",
+          "margin-left": "calc(1rem * calc(1 - var(--tw-space-x-reverse)))",
+        },
+      }
+
+      addUtilities(newUtilities, ["responsive"])
+    },
+  ],
+}
+
+function addVariablesForColors({ addBase, theme }) {
+  let allColors = flattenColorPalette(theme("colors"))
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  )
+
+  addBase({
+    ":root": newVars,
+  })
 }

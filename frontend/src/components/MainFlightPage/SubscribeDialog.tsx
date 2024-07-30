@@ -11,10 +11,13 @@ import {
 import { Input } from "@/components/ui/shadcn/input"
 import { Label } from "@/components/ui/shadcn/label"
 import axiosInstance from "@/utils/axios"
+import { useState } from "react"
 
-export default function SubscribeDialog({flight_id}) {
+export default function SubscribeDialog({flight_id}:{flight_id:any}) {
 
-  const handleSubmit = async (event) => {
+  const [subscribe, setSubscribe] = useState(0)
+
+  const handleSubmit = async (event:any) => {
       event.preventDefault();
       const formData = new FormData(event.target);
       const email = formData.get('email') === 'on'; 
@@ -30,7 +33,12 @@ export default function SubscribeDialog({flight_id}) {
 
       try {
           const response = await axiosInstance.post('/subscriptions', subscriptionData);
+          if(response.status==401){
+            localStorage.removeItem('token')
+            localStorage.removeItem('username')
+          }
           if (response.status === 200) {
+              setSubscribe(1)
               console.log('Subscription successful:', response.data);
          
           } else {
@@ -47,7 +55,7 @@ export default function SubscribeDialog({flight_id}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-[#1ed75fce] hover:bg-[#1ED760]">Subscribe</Button>
+        <Button onClick={()=>setSubscribe(3)} variant="outline" className="bg-[#1ed75fce] hover:bg-[#1ED760]">Subscribe</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -84,7 +92,7 @@ export default function SubscribeDialog({flight_id}) {
         
 
         <DialogFooter>
-          <Button className=" bg-black" type="submit">Save changes</Button>
+          <Button onClick={()=>setSubscribe(2)} className=" bg-black" type="submit">{subscribe==1?'Changes Saved!':subscribe==2?'Saving..':'Save Changes'}</Button>
         </DialogFooter>
         </form>
       </DialogContent>

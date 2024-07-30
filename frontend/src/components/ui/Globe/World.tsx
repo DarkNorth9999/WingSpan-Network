@@ -1,5 +1,6 @@
 // World.tsx
-import React from 'react';
+// @ts-nocheck
+// import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Globe, WebGLRendererConfig } from './Globe';
 import { WorldProps } from './types';
@@ -11,7 +12,7 @@ export function World({ globeConfig, data }: WorldProps) {
       <pointLight position={[10, 10, 10]} />
       <WebGLRendererConfig />
       <Globe globeConfig={globeConfig} data={data} />
-      <OrbitControls />
+      {/* <OrbitControls /> */}
     </Canvas>
   );
 }

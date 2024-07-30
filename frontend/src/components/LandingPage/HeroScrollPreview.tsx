@@ -2,7 +2,7 @@
 import { ContainerScroll } from "../ui/HeroScroll"; // Adjust the import path as necessary
 import MainFlightPage from '../MainFlightPage/MainFlightPage'
 
-export default function HeroScrollDemo({setUsername}) {
+export default function HeroScrollDemo({setUsername}:{setUsername:any}) {
   return (
     <div className="flex flex-col overflow-hidden">
       <ContainerScroll

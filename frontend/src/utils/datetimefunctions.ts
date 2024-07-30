@@ -1,5 +1,5 @@
 
-export  function parseAndFormatDateTime(isoString) {
+export  function parseAndFormatDateTime(isoString:any) {
     // Extract the components from the input string
     const [datePart, timePart] = isoString.split('T');
     const [year, month, day] = datePart.split('-');
@@ -17,7 +17,7 @@ export  function parseAndFormatDateTime(isoString) {
 
 
   
-export  function convertDateFormat(dateStr) {
+export  function convertDateFormat(dateStr:any) {
 
     const parts = dateStr.split('-');
     const day = parts[0];

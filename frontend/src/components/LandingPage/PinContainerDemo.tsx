@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { PinContainer } from "../ui/PinCard";
 import maps from '@/assets/maps.png'
 

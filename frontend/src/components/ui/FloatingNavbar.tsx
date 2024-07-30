@@ -1,5 +1,5 @@
-"use client";
-import React, { useState } from "react";
+// @ts-nocheck
+import React, { useRef, useState } from "react";
 import {
   motion,
   AnimatePresence,
@@ -19,14 +19,23 @@ export const FloatingNav = ({
     name: string;
     link: string;
     icon?: JSX.Element;
-    func:any,
-    username: string
   }[];
   className?: string;
+  func:() => void;
+  username: string|null;
 }) => {
   const { scrollYProgress } = useScroll();
 
   const [visible, setVisible] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const timeoutRef = useRef(null);
+
+  const onLogout=()=>{
+    localStorage.removeItem('username')
+    localStorage.removeItem('token')
+    window.location.reload();
+  }
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
     // Check if current is not undefined and is a number
@@ -77,10 +86,48 @@ export const FloatingNav = ({
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </Link>
         ))}
+        <div 
+          className="relative inline-block"
+          onMouseEnter={() => {
+            
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+            setShowDropdown(true);
+            
+          }}
+          onMouseLeave={() => {
+            timeoutRef.current = setTimeout(() => {
+              setShowDropdown(false);
+            }, 300);
+          }}
+        >
         <button onClick={()=>func()} className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
           <span>{username?`Welcome ${username}`:"Login"}</span>
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
         </button>
+
+        {username && showDropdown && (
+          <button
+            onClick={onLogout}
+            className="absolute top-full w-[80%] mt-1 right-[1.25rem] bg-white dark:bg-black text-sm border border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-3 py-1 rounded-full shadow-lg"
+            // className="absolute top-full mt-1 right-0 bg-white dark:bg-black text-sm border border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-3 py-1 rounded-full shadow-lg"
+          >
+            Logout
+          </button>
+        )}
+
+        </div>
+
+        {/* <Link
+            className={cn(
+              "relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500 mr-8"
+            )}
+            onClick={()=>{}}
+          >
+            <span className="hidden sm:block text-sm">Logout</span>
+          </Link> */}
+
       </motion.div>
     </AnimatePresence>
   );

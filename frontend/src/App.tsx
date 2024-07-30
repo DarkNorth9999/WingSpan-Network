@@ -3,12 +3,17 @@ import HeroScrollDemo from './components/LandingPage/HeroScrollPreview'
 import GlobeDemo from './components/LandingPage/Globe'
 import AnimatedPinDemo from './components/LandingPage/PinContainerDemo'
 import FloatingNavbar from './components/MainFlightPage/Navbar'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 
 function App() {
   const mainPageRef = useRef(null)
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState<string|null>(null);
+
+  useEffect(()=>{
+    const usern = localStorage.getItem('username');
+    if(usern) setUsername(usern)
+  })
 
   return (
     <>

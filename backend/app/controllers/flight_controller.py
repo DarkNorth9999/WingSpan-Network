@@ -14,6 +14,8 @@ def search_flight( flight_number: str = None, date_of_flight: str = None,
                   departure_airport: str = None, arrival_airport: str = None,
                   db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     try:
+        if not current_user:
+            raise HTTPException(status_code=401, detail="User not authorized")
 
         date_of_flight = datetime.strptime(date_of_flight, '%Y-%m-%dT%H:%M:%SZ')
         print(date_of_flight)

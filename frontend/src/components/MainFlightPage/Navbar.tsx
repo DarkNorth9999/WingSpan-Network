@@ -1,8 +1,7 @@
-import { Ref, useEffect, useState } from "react";
 import { FloatingNav } from "../../components/ui/FloatingNavbar";
 import { IconHome } from "@tabler/icons-react";
 
-export default function FloatingNavbar({mainPageRef, username}:{mainPageRef:useRef<HTMLInputElement>, username:string}) {
+export default function FloatingNavbar({mainPageRef, username}:{mainPageRef:React.RefObject<HTMLInputElement>, username:string|null}) {
 
 
   const scrollToDiv = () => {

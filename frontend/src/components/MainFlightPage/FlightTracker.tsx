@@ -5,36 +5,34 @@ import { Input } from "../ui/Form/Input";
 import { cn } from "../../utils/cn";
 import DatetimePickerGranularity from '@/components/ui/DateTimePicker'
 import axiosInstance from "@/utils/axios";
+import FlightLoader from "./FlightLoader";
 
-function formatDateToLocalISOString(date) {
-  const pad = (num) => num.toString().padStart(2, '0');
+function formatDateToLocalISOString(date:any) {
+  const pad = (num:any) => num.toString().padStart(2, '0');
 
-  const year = date.getFullYear();           // Get the local year
-  const month = pad(date.getMonth() + 1);    // Get the local month (0-indexed, hence +1)
-  const day = pad(date.getDate());           // Get the local day
-  const hours = pad(date.getHours());        // Get the local hours
-  const minutes = pad(date.getMinutes());    // Get the local minutes
-  const seconds = pad(date.getSeconds());    // Get the local seconds
+  const year = date.getFullYear();           
+  const month = pad(date.getMonth() + 1);    
+  const day = pad(date.getDate());           
+  const hours = pad(date.getHours());        
+  const minutes = pad(date.getMinutes());   
+  const seconds = pad(date.getSeconds());    
 
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
 }
 
 
-export default function SignupFormDemo({setShowForm, setFlightData}) {
+export default function FlightTrackerForm({setShowForm, setFlightData}:{setShowForm:any, setFlightData:any}) {
     const [isLoading, setIsLoading] = useState(false); 
     const [date, setDate] = React.useState<Date | undefined>(new Date('Thu Aug 01 2024 07:00:00 GMT+0530 (India Standard Time)'));
 
     useEffect(()=>{
-      // if(date) console.log(date);
+      if(date) console.log(date);
+      console.log(isLoading)
     },[date])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);  
-
-        if(!date){
-          return;
-        }
 
         const queryParams = new URLSearchParams({
             flight_number: e.target.flightNumber.value, 
@@ -50,16 +48,29 @@ export default function SignupFormDemo({setShowForm, setFlightData}) {
             const response = await axiosInstance.get(`/flights/search?${queryParams}`, {  
               method: 'GET'
             });
-            let data = response.data;
-            console.log(data); 
-            data = JSON.parse(data) 
-            setFlightData(data);
-            setIsLoading(false);  
-            setShowForm(false);
-        } catch (error) {
+            if(response.status==401){
+              console.log('reponse 401')
+              localStorage.removeItem('token')
+              localStorage.removeItem('username')
+            }
+            if(response.status==200){
+              let data = response.data;
+              console.log(data); 
+              data = JSON.parse(data) 
+              setFlightData(data);
+              // setIsLoading(false);  
+              setShowForm(false);
+            }
+            
+        } catch (error:any) {
             console.error('Error fetching data:', error);
+            if(error.response.status==401){
+              console.log('reponse 401')
+              localStorage.removeItem('token')
+              localStorage.removeItem('username')
+            }
         } finally {
-            setIsLoading(false);  
+            // setIsLoading(false);  
         }
     };
 
@@ -70,7 +81,9 @@ export default function SignupFormDemo({setShowForm, setFlightData}) {
 
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <>
+    {!isLoading &&
+      <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to WingSpan!
       </h2>
@@ -109,6 +122,9 @@ export default function SignupFormDemo({setShowForm, setFlightData}) {
         
       </form>
     </div>
+    }
+    {isLoading && <FlightLoader/>}
+    </>
   );
 }
 

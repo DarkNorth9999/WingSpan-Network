@@ -1,4 +1,4 @@
-import React from "react";
+
 import { twMerge } from "tailwind-merge"; // Ensure it's installed via npm or yarn
 import { TracingBeam } from "../ui/TracingBeam"; // Adjust the import path as needed
 // import { calsans } from "@/fonts/calsans"; // Ensure your custom fonts or styles are properly imported

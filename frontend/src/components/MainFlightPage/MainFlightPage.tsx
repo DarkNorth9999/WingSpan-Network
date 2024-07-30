@@ -1,9 +1,10 @@
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import LoginAndSignUp from './LoginPage'
-import SignupFormDemo from './FlightTracker'
+import FlightTrackerForm from './FlightTracker'
 import FlightInfo from './FlightStatus'
 import {parseAndFormatDateTime} from '@/utils/datetimefunctions'
 import SubscribeDialog from './SubscribeDialog'
+import MenubarDemo from './demo'
 
 
 type FlightInfo = {
@@ -25,7 +26,7 @@ type FlightInfo = {
   subscription_count: number;
 };
 
-function MainFlightPage({setUsername}) {
+function MainFlightPage({setUsername}:{setUsername:any}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showForm, setShowForm] = useState(true);
   const [flightData, setFlightData] = useState<FlightInfo>();
@@ -44,7 +45,7 @@ function MainFlightPage({setUsername}) {
    
     {isLoggedIn && <>
     
-      {showForm && <><SignupFormDemo setShowForm={setShowForm} setFlightData={setFlightData}/></>}
+      {showForm && <><FlightTrackerForm setShowForm={setShowForm} setFlightData={setFlightData}/></>}
       {!showForm && 
         <div className='flex flex-col w-[80%] h-[40%]'>
           <div className='flex justify-end mb-[0.8rem]'>
@@ -79,6 +80,7 @@ function MainFlightPage({setUsername}) {
     </>}
 
     {!isLoggedIn && <LoginAndSignUp setUsername={setUsername} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>}
+
     
     </>
     

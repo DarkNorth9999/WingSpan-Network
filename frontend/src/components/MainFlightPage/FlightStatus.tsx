@@ -1,8 +1,10 @@
+// @ts-nocheck
 import React from 'react';
 import Timeline from '@/components/ui/PlaneTimeline'
 import { convertDateFormat } from '@/utils/datetimefunctions';
+import {FlightInfoProps} from '@/types/flightinfoprops'
 
-const FlightInfo = ({ flightNumber, departureCity, departureTime, departureDate, scheduledDeparture, arrivalCity, arrivalTime, arrivalDate ,scheduledArrival, terminal, status }) => {
+const FlightInfo: React.FC<FlightInfoProps> = ({ flightNumber, departureCity, departureTime, departureDate, scheduledDeparture, arrivalCity, arrivalTime, arrivalDate ,scheduledArrival, terminal, status }) => {
     return (
         <div className="bg-white shadow-md rounded-lg p-4 w-[100%] h-[100%] flex flex-col justify-between">
             <div className="flex items-center justify-between">
@@ -21,7 +23,7 @@ const FlightInfo = ({ flightNumber, departureCity, departureTime, departureDate,
                     <span className="font-semibold">{arrivalCity}</span>
                 </div>
             </div>
-            <Timeline position={50} />
+            <Timeline status={status} />
             <div className="flex items-center justify-between mt-2">
                 <span className="text-xs font-bold text-orange-500">
                     Flight {flightNumber}

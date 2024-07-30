@@ -26,7 +26,6 @@ async def lifespan(app: FastAPI):
     await consumer.stop()
 
 
-
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
@@ -39,6 +38,7 @@ app.add_middleware(
 
 app.include_router(auth_controller.router, prefix="/auth")
 app.include_router(token_controller.router, prefix="/token")
+# app.include_router(airport_controller.router, prefix="/airports")
 app.include_router(flight_controller.router, prefix="/flights")
 app.include_router(subscription_controller.router, prefix="/subscriptions")
 app.include_router(notification_controller.router, prefix="/notifications")
@@ -50,7 +50,6 @@ async def send_message_to_kafka(message: Message):
         return {"status": "Message sent to Kafka"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 @app.get("/")
 async def root():
