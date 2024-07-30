@@ -4,7 +4,6 @@ import FlightTrackerForm from './FlightTracker'
 import FlightInfo from './FlightStatus'
 import {parseAndFormatDateTime} from '@/utils/datetimefunctions'
 import SubscribeDialog from './SubscribeDialog'
-import MenubarDemo from './demo'
 
 
 type FlightInfo = {
