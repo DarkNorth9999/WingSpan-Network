@@ -2,9 +2,18 @@ from sqlalchemy import Column, String, TIMESTAMP, Integer, UUID
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from datetime import datetime
+from pydantic import BaseModel
 import uuid
 
+class FlightSearchRequest(BaseModel):
+    flight_number: str
+    date_of_flight: str
+    departure_airport: str
+    arrival_airport: str
+
+
 Base = declarative_base()
+
 
 class Flight(Base):
     __tablename__ = "flights"

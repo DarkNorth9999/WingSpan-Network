@@ -15,3 +15,11 @@ def create_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def authenticate_user(db: Session, username: str, password: str, pwd_context):
+    user = get_user_by_username(db, username)
+    if not user:
+        return None
+    if not pwd_context.verify(password, user.password):
+        return None
+    return user

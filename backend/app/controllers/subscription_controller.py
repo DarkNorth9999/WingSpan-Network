@@ -1,24 +1,29 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.subscription import SubscriptionCreate, Subscription
+from app.schemas.subscription import SubscriptionCreate, Subscription, SubscriptionControllerModel
 from app.services.subscription_service import subscribe_user, list_user_subscriptions, list_users_for_flight
 from app.database import get_db
 import uuid
 from typing import List
+from app.schemas.user import User
+from app.services.auth_service import get_current_active_user
 
 
 router = APIRouter()
 
 @router.post("/", response_model=Subscription)
-def subscribe_user_route(subscription: SubscriptionCreate, db: Session = Depends(get_db)):
-    return subscribe_user(subscription, db)
+def subscribe_user_route(subscription: SubscriptionControllerModel, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
+    user_id = current_user.user_id
+    full_subscription_data = SubscriptionCreate(**subscription.dict(), user_id=user_id)
+    return subscribe_user(full_subscription_data, db)
+
 
 @router.get("/", response_model=List[Subscription])
-def list_subscriptions_route(user_id: uuid.UUID, db: Session = Depends(get_db)):
+def list_subscriptions_route(user_id: uuid.UUID, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     return list_user_subscriptions(user_id, db)
 
 @router.get("/flights/{flight_id}/subscribers")
-def flight_subscribers(flight_id: str, db: Session = Depends(get_db)):
+def flight_subscribers(flight_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     try:
         return list_users_for_flight(flight_id, db)
     except Exception as e:

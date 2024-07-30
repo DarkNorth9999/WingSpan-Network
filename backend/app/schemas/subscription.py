@@ -6,7 +6,17 @@ class SubscriptionBase(BaseModel):
     flight_id: uuid.UUID
 
 class SubscriptionCreate(SubscriptionBase):
-    pass
+    email: bool
+    phone_number: bool
+
+
+class SubscriptionControllerModel(BaseModel):
+    flight_id: uuid.UUID
+    email: bool
+    phone_number: bool
+
+
+
 
 class Subscription(SubscriptionBase):
     subscription_id: uuid.UUID

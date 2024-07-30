@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from app.controllers import auth_controller, flight_controller, subscription_controller, notification_controller
+from app.controllers import auth_controller, flight_controller, subscription_controller, notification_controller, token_controller
+from app.kafka.producer import KafkaProducer
+from app.kafka.consumer import KafkaConsumer
 
 app = FastAPI()
 
@@ -14,9 +16,25 @@ app.add_middleware(
 )
 
 app.include_router(auth_controller.router, prefix="/auth")
+app.include_router(token_controller.router, prefix="/token")
 app.include_router(flight_controller.router, prefix="/flights")
 app.include_router(subscription_controller.router, prefix="/subscriptions")
 app.include_router(notification_controller.router, prefix="/notifications")
+
+# kafka_servers = 'localhost:9092'
+# producer = KafkaProducer(servers=kafka_servers)
+# consumer = KafkaConsumer(servers=kafka_servers, topic='notifications', group_id='group1')
+
+# @app.on_event("startup")
+# async def startup_event():
+#     await producer.start()
+#     await consumer.start()
+#
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     await producer.stop()
+#     await consumer.stop()
+
 
 @app.get("/")
 async def root():

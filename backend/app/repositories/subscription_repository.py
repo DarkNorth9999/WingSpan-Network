@@ -4,8 +4,12 @@ from app.models.user import User
 from app.schemas.subscription import SubscriptionCreate
 import uuid
 
-def get_subscription(db: Session, subscription_id: uuid.UUID):
-    return db.query(Subscription).filter(Subscription.subscription_id == subscription_id).first()
+def get_subscription_by_user_and_flight(db: Session, user_id: uuid.UUID, flight_id: uuid.UUID):
+    return db.query(Subscription).filter(
+        Subscription.user_id == user_id,
+        Subscription.flight_id == flight_id
+    ).first()
+
 
 def get_subscriptions_by_user(db: Session, user_id: uuid.UUID):
     return db.query(Subscription).filter(Subscription.user_id == user_id).all()
