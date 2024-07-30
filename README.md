@@ -1,12 +1,16 @@
 # WingSpan - Flight Tracking Application
 
-![text](https://github.com/DarkNorth9999/DarkNorth9999-WingSpan-Network-Frontend/blob/0e997518f5c2c53cc2d5ef41b0839fba5480c48f/WingSpan.gif)
+![Demo](https://github.com/DarkNorth9999/DarkNorth9999-WingSpan-Network-Frontend/blob/0e997518f5c2c53cc2d5ef41b0839fba5480c48f/WingSpan.gif)
 
 WingSpan Network is a real-time flight tracking application with live notification on flight updates like delays, gate changes, cancellations, and more.
 
 ## Architecture
 
-## Database
+![Architecture](https://github.com/DarkNorth9999/WingSpan-Network/blob/ca763a9219f8e7fb23b3de0cd5a1e1d196f72b9d/ArchitectureDiagram.png)
+
+## Use Case Diagram
+
+![UseCaseDiagram](https://github.com/DarkNorth9999/WingSpan-Network/blob/ca763a9219f8e7fb23b3de0cd5a1e1d196f72b9d/UseCaseDiagram.png)
 
 ## Features
 
