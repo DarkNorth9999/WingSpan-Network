@@ -31,11 +31,13 @@ WingSpan Network is a real-time flight tracking application with live notificati
 
 - **Developer Note**: Created a Clean Project Structure along with best practices like defining single instance of axios for API calls (intercepter), using environment variables, doing manual feature testing and more
 
+### Real-Time Notifications
+
+Utilized asynchronous programming to create a single runnable main.py file (for backend, e xcept kafka deployment on docker) for kafka consumer and a thread which wakes up every unit of specified time (otherwise sleeping) to perform any update check, if updates are found they are produced as records in kafka queue which are consumed (one record for each flight) and communicated to respective users by their chosen means
+
 ### Backend
 
 - **Python**: Implemented MVC Architecture, with controllers being FastAPI routes which talk with services, where the business logic is handled, services talk with repositories who have access to models where they can interact with our database.
-
-- **Real-Time Notifications**: Utilized asynchronous programming to create a single runnable main.py file (for backend, e xcept kafka deployment on docker) for kafka consumer and a thread which wakes up every unit of specified time (otherwise sleeping) to perform any update check, if updates are found they are produced as records in kafka queue which are consumed (one record for each flight) and communicated to respective users by their chosen means
 
 The thread checks every 2 hours for flights that were updated atleast 5 hours ago, unless they have a close departure time, it ignores the other flight uptill the next sleep cycle is over
 
