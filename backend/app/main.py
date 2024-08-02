@@ -5,22 +5,22 @@ from app.controllers import auth_controller, flight_controller, subscription_con
 from app.kafka.producer import producer
 from app.kafka.consumer import consumer
 import asyncio
-from schemas.kafka import Message
+from app.schemas.kafka import Message
 from contextlib import asynccontextmanager
 from app.services.notifier_service import check_flights_update
 
 async def periodic_flight_check():
     while True:
         await check_flights_update()
-        await asyncio.sleep(7200)
+        await asyncio.sleep(2)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await asyncio.create_task(periodic_flight_check())
     await producer.start()
     await consumer.start()
-    asyncio.create_task(consumer.consume_messages())
-    asyncio.create_task(periodic_flight_check())
+    await asyncio.create_task(consumer.consume_messages())
     yield
     await producer.stop()
     await consumer.stop()
@@ -57,4 +57,4 @@ async def root():
 
 if __name__ == "__main__":
     print('FastAPI uvicorn launched')
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

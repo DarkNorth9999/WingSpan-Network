@@ -33,5 +33,5 @@ class KafkaConsumer:
     async def stop(self):
         await self.consumer.stop()
 
-kafka_servers = 'localhost:9093'
+kafka_servers = 'kafka:9092'
 consumer = KafkaConsumer(servers=kafka_servers, topic='notification')

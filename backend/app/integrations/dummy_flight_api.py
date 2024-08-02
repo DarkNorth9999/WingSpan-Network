@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 def load_flight_data():
-    with open('integrations/flight_data.json', 'r') as file:
+    with open('app/integrations/flight_data.json', 'r') as file:
         data = json.load(file)
     return data
 

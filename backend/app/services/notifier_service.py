@@ -15,8 +15,8 @@ async def check_flights_update():
     session = next(db_gen)
 
     check_time = datetime.now() - timedelta(hours=4)
-
-    flights = session.query(Flight).filter(Flight.last_updated <= check_time,
+#Flight.last_updated <= check_time
+    flights = session.query(Flight).filter(
                                            Flight.subscription_count > 0).all()
 
 
